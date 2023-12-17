@@ -67,7 +67,7 @@ const OrdersPage = () => {
         <tbody>
           {data.map((item: OrderType) => (
             <tr
-              className={`${item.status !== "delivered" && "bg-red-50"}`}
+              className={`${item.status !== "delivered" ? "bg-red-100" : "bg-green-100"}`}
               key={item.id}
             >
               <td className="hidden md:block py-6 px-1">{item.id}</td>

@@ -4,7 +4,7 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-import {upload} from '@/app/api/upload/route';
+import { upload } from "@/app/api/upload/route";
 
 type Inputs = {
   title: string;
@@ -66,32 +66,34 @@ const AddPage = () => {
     setFileName(item.name);
   };
 
+  // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   try {
+  //     const url = await upload();
+  //     const res = await fetch("http://localhost:3000/api/products", {
+  //       method: "POST",
+  //       body: JSON.stringify({
+  //         img: url,
+  //         ...inputs,
+  //         options,
+  //       }),
+  //     });
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    try {
-      const url = await upload();
-      const res = await fetch("http://localhost:3000/api/products", {
-        method: "POST",
-        body: JSON.stringify({
-          img: url,
-          ...inputs,
-          options,
-        }),
-      });
+  //     const data = await res.json();
+  //     console.log("data ->", data);
 
-      const data = await res.json();
-      console.log("data ->", data);
-
-      router.push(`/product/${data.id}`);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  //     router.push(`/product/${data.id}`);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
 
   return (
     <div className="p-4 lg:px-20 xl:px-40 h-[calc(100vh-6rem)] md:h-[calc(100vh-9rem)] flex items-center justify-center text-gray-700">
-      <form onSubmit={handleSubmit} className="flex flex-wrap gap-3">
+      <form
+        //  onSubmit={handleSubmit}
+        className="flex flex-wrap gap-3"
+      >
         <h1 className="text-4xl mb-2 text-gray-700 font-bold">
           Add New Product
         </h1>

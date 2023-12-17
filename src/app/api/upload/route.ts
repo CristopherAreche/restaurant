@@ -3,13 +3,13 @@ import { v2 as cloudinary } from "cloudinary";
 import path from "path";
 import { writeFile } from "fs/promises";
 
-cloudinary.config({
-  cloud_name: "dvow7hj3z",
-  api_key: "418218761311566",
-  api_secret: "npu1jDcnTurBN-27jnSxpCdiHW0",
-});
+// cloudinary.config({
+//   cloud_name: "dvow7hj3z",
+//   api_key: "418218761311566",
+//   api_secret: "npu1jDcnTurBN-27jnSxpCdiHW0",
+// });
 
-export async function upload(request) {
+export async function upload(request:any) {
   const data = await request.formData();
   const image = data.get("image");
 
