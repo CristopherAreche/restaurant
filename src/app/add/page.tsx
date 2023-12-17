@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import {upload} from '@/app/api/upload/route';
 
 type Inputs = {
   title: string;
@@ -33,6 +34,7 @@ const AddPage = () => {
 
   const [options, setOptions] = useState<Option[]>([]);
   const [file, setFile] = useState<File>();
+  const [fileName, setFileName] = useState<string | null>(null);
 
   const router = useRouter();
 
@@ -61,26 +63,12 @@ const AddPage = () => {
     const target = e.target as HTMLInputElement;
     const item = (target.files as FileList)[0];
     setFile(item);
+    setFileName(item.name);
   };
 
-  const upload = async () => {
-    const data = new FormData();
-    data.append("file", file!);
-    data.append("upload_preset", "restaurant");
-
-    const res = await fetch("https://api.cloudinary.com/v1_1/lamadev/image", {
-      method: "POST",
-      headers: { "Content-Type": "multipart/form-data" },
-      body: data,
-    });
-
-    const resData = await res.json();
-    return resData.url;
-  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     try {
       const url = await upload();
       const res = await fetch("http://localhost:3000/api/products", {
@@ -93,6 +81,7 @@ const AddPage = () => {
       });
 
       const data = await res.json();
+      console.log("data ->", data);
 
       router.push(`/product/${data.id}`);
     } catch (err) {
@@ -101,9 +90,9 @@ const AddPage = () => {
   };
 
   return (
-    <div className="p-4 lg:px-20 xl:px-40 h-[calc(100vh-6rem)] md:h-[calc(100vh-9rem)] flex items-center justify-center text-red-500">
-      <form onSubmit={handleSubmit} className="flex flex-wrap gap-6">
-        <h1 className="text-4xl mb-2 text-gray-300 font-bold">
+    <div className="p-4 lg:px-20 xl:px-40 h-[calc(100vh-6rem)] md:h-[calc(100vh-9rem)] flex items-center justify-center text-gray-700">
+      <form onSubmit={handleSubmit} className="flex flex-wrap gap-3">
+        <h1 className="text-4xl mb-2 text-gray-700 font-bold">
           Add New Product
         </h1>
         <div className="w-full flex flex-col gap-2 ">
@@ -112,7 +101,7 @@ const AddPage = () => {
             htmlFor="file"
           >
             <Image src="/upload.png" alt="" width={30} height={20} />
-            <span>Upload Image</span>
+            <span>{fileName || "Upload Image"}</span>
           </label>
           <input
             type="file"
@@ -124,7 +113,7 @@ const AddPage = () => {
         <div className="w-full flex flex-col gap-2 ">
           <label className="text-sm">Title</label>
           <input
-            className="ring-1 ring-red-200 p-4 rounded-sm placeholder:text-red-200 outline-none"
+            className="ring-1 ring-gray-400 p-4 rounded-sm placeholder:text-gray-400 outline-none"
             type="text"
             placeholder="Bella Napoli"
             name="title"
@@ -135,7 +124,7 @@ const AddPage = () => {
           <label className="text-sm">Description</label>
           <textarea
             rows={3}
-            className="ring-1 ring-red-200 p-4 rounded-sm placeholder:text-red-200 outline-none"
+            className="ring-1 ring-gray-400 p-4 rounded-sm placeholder:text-gray-400 outline-none"
             placeholder="A timeless favorite with a twist, showcasing a thin crust topped with sweet tomatoes, fresh basil and creamy mozzarella."
             name="desc"
             onChange={handleChange}
@@ -144,7 +133,7 @@ const AddPage = () => {
         <div className="w-full flex flex-col gap-2 ">
           <label className="text-sm">Price</label>
           <input
-            className="ring-1 ring-red-200 p-4 rounded-sm placeholder:text-red-200 outline-none"
+            className="ring-1 ring-gray-400 p-4 rounded-sm placeholder:text-gray-400 outline-none"
             type="number"
             placeholder="29"
             name="price"
@@ -154,7 +143,7 @@ const AddPage = () => {
         <div className="w-full flex flex-col gap-2 ">
           <label className="text-sm">Category</label>
           <input
-            className="ring-1 ring-red-200 p-4 rounded-sm placeholder:text-red-200 outline-none"
+            className="ring-1 ring-gray-400 p-4 rounded-sm placeholder:text-gray-400 outline-none"
             type="text"
             placeholder="pizzas"
             name="catSlug"
@@ -165,14 +154,14 @@ const AddPage = () => {
           <label className="text-sm">Options</label>
           <div className="flex">
             <input
-              className="ring-1 ring-red-200 p-4 rounded-sm placeholder:text-red-200 outline-none"
+              className="ring-1 ring-gray-400 p-4 rounded-sm placeholder:text-gray-400 outline-none"
               type="text"
               placeholder="Title"
               name="title"
               onChange={changeOption}
             />
             <input
-              className="ring-1 ring-red-200 p-4 rounded-sm placeholder:text-red-200 outline-none"
+              className="ring-1 ring-gray-400 p-4 rounded-sm placeholder:text-gray-400 outline-none"
               type="number"
               placeholder="Additional Price"
               name="additionalPrice"
@@ -204,7 +193,7 @@ const AddPage = () => {
         </div>
         <button
           type="submit"
-          className="bg-red-500 p-4 text-white w-48 rounded-md relative h-14 flex items-center justify-center"
+          className="bg-amber-700 p-4 text-white w-48 rounded-md relative h-14 flex items-center justify-center"
         >
           Submit
         </button>

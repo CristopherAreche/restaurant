@@ -8,7 +8,7 @@ import UserLinks from "./UserLinks";
 const Navbar = () => {
   const user = false;
   return (
-    <div className="h-12 text-red-500 p-4 flex items-center justify-between border-b-2 border-b-red-500 uppercase md:h-24 lg:px-20 xl:px-40">
+    <div className="h-12 text-gray-600 p-4 flex items-center justify-between border-b-2 border-b-gray-500 uppercase md:h-24 lg:px-20 xl:px-30">
       {/* LEFT LINKS */}
       <div className="hidden md:flex gap-4 flex-1">
         <Link href="/">Homepage</Link>
@@ -17,7 +17,7 @@ const Navbar = () => {
       </div>
       {/* LOGO */}
       <div className="text-xl md:font-bold flex-1 md:text-center">
-        <Link href="/">Massimo</Link>
+        <Link href="/">COFFEE SHOP</Link>
       </div>
       {/* MOBILE MENU */}
       <div className="md:hidden">
@@ -29,7 +29,7 @@ const Navbar = () => {
           <Image src="/phone.png" alt="" width={20} height={20} />
           <span>123 456 78</span>
         </div>
-        <UserLinks/>
+        <UserLinks />
         <CartIcon />
       </div>
     </div>

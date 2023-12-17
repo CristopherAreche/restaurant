@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
+import { handleCheckout } from "@/services/handleCheckout.service";
 
 const CartPage = () => {
   const { products, totalItems, totalPrice, removeFromCart } = useCartStore();
@@ -14,36 +15,16 @@ const CartPage = () => {
     useCartStore.persist.rehydrate();
   }, []);
 
-  const handleCheckout = async () => {
-    if (!session) {
-      router.push("/login");
-    } else {
-      try {
-        const res = await fetch("http://localhost:3000/api/orders", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            price: totalPrice,
-            products,
-            status: "Not Paid!",
-            userEmail: session.user.email,
-          }),
-        });
-        const data =await res.json()
-        router.push(`/pay/${data.id}`)
-      } catch (err) {
-        console.log(err);
-      }
-    }
-  };
-
   return (
-    <div className="h-[calc(100vh-6rem)] md:h-[calc(100vh-9rem)] flex flex-col text-red-500 lg:flex-row">
+    <div className="h-[calc(100vh-6rem)] md:h-[calc(100vh-9rem)] flex flex-col text-gray-800 lg:flex-row">
       {/* PRODUCTS CONTAINER */}
       <div className="h-1/2 p-4 flex flex-col justify-center overflow-scroll lg:h-full lg:w-2/3 2xl:w-1/2 lg:px-20 xl:px-40">
         {/* SINGLE ITEM */}
         {products.map((item) => (
-          <div className="flex items-center justify-between mb-4" key={item.id}>
+          <div
+            className="flex items-center justify-between mb-4 shadow-lg px-4 py-2 rounded-lg"
+            key={item.id}
+          >
             {item.img && (
               <Image src={item.img} alt="" width={100} height={100} />
             )}
@@ -64,7 +45,7 @@ const CartPage = () => {
         ))}
       </div>
       {/* PAYMENT CONTAINER */}
-      <div className="h-1/2 p-4 bg-fuchsia-50 flex flex-col gap-4 justify-center lg:h-full lg:w-1/3 2xl:w-1/2 lg:px-20 xl:px-40 2xl:text-xl 2xl:gap-6">
+      <div className="h-1/2 p-4 bg-amber-50 flex flex-col gap-4 justify-center lg:h-full lg:w-1/3 2xl:w-1/2 lg:px-20 xl:px-30 2xl:text-xl 2xl:gap-6">
         <div className="flex justify-between">
           <span className="">Subtotal ({totalItems} items)</span>
           <span className="">${totalPrice}</span>
@@ -83,8 +64,8 @@ const CartPage = () => {
           <span className="font-bold">${totalPrice}</span>
         </div>
         <button
-          className="bg-red-500 text-white p-3 rounded-md w-1/2 self-end"
-          onClick={handleCheckout}
+          className="bg-amber-700 text-white p-3 rounded-md w-1/2 self-end"
+          onClick={()=>handleCheckout({session, totalPrice, products})}
         >
           CHECKOUT
         </button>
