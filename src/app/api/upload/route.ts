@@ -1,7 +1,7 @@
-import { NextResponse } from "next/server";
-import { v2 as cloudinary } from "cloudinary";
-import path from "path";
-import { writeFile } from "fs/promises";
+// import { NextResponse } from "next/server";
+// import { v2 as cloudinary } from "cloudinary";
+// import path from "path";
+// import { writeFile } from "fs/promises";
 
 // cloudinary.config({
 //   cloud_name: "dvow7hj3z",
@@ -9,24 +9,24 @@ import { writeFile } from "fs/promises";
 //   api_secret: "npu1jDcnTurBN-27jnSxpCdiHW0",
 // });
 
-export async function upload(request:any) {
-  const data = await request.formData();
-  const image = data.get("image");
+// export async function upload(request:any) {
+//   const data = await request.formData();
+//   const image = data.get("image");
 
-  if (!image) {
-    return NextResponse.json("No Image", {
-      status: 400,
-    });
-  }
+//   if (!image) {
+//     return NextResponse.json("No Image", {
+//       status: 400,
+//     });
+//   }
 
-  const bytes = await image.arrayBuffer();
-  const buffer = Buffer.from(bytes);
+//   const bytes = await image.arrayBuffer();
+//   const buffer = Buffer.from(bytes);
 
-  const filePath = path.join(process.cwd(), "public", image.name);
-  await writeFile(filePath, buffer);
-  await cloudinary.uploader.upload(filePath);
-  return NextResponse.json("Image has been uploaded");
-}
+//   const filePath = path.join(process.cwd(), "public", image.name);
+//   await writeFile(filePath, buffer);
+//   await cloudinary.uploader.upload(filePath);
+//   return NextResponse.json("Image has been uploaded");
+// }
 
 // const upload = async () => {
 //   const preset_key = "g2vxs5jy";

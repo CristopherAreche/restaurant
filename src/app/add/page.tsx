@@ -4,7 +4,7 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-import { upload } from "@/app/api/upload/route";
+// import { upload } from "@/app/api/upload/route";
 
 type Inputs = {
   title: string;
